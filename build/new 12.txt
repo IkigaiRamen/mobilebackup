@@ -1,0 +1,20 @@
+public TestEntity createTest (TestEntity t){
+        String url = Statics.BASE_URL+"newtest";
+        reqP.setPost(true);
+        reqP.setUrl(url);
+        reqP.addArgument("userId", "7");          //TOCHANGE
+        reqP.addArgument("duree", String.valueOf(t.getDuree()));
+        reqP.addArgument("nbrTent", String.valueOf(t.getNbrTentative()));
+        reqP.addArgument("titre",t.getTitre());
+        reqP.addResponseListener(new ActionListener<NetworkEvent>() {
+            @Override
+            public void actionPerformed(NetworkEvent evt) {
+                quizz = parseTest(new String(reqG.getResponseData()));
+                reqG.removeResponseListener(this);    
+            }
+            
+        });
+
+        NetworkManager.getInstance().addToQueueAndWait(reqG);
+        return quizz;
+    }
